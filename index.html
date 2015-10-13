@@ -121,11 +121,11 @@ var recognizing = false;
 var ignore_onend;
 var start_timestamp;
 
-var transcript_length = '';
+var transcript_length = new Array();
 var interfal = setInterval(logWords, 5000);
 function logWords() {
   if (recognizing) {
-    transcript_length.push(final_transcript.length);
+    transcript_length.push(final_transcript.split(" ").length);
     if (transcript_length.length>2) {
       if (Math.abs(transcript_length[transcript_length.length-1]-transcript_length[transcript_length.length-2])*12>188){
           showInfo('too_fast');
