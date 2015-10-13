@@ -100,6 +100,8 @@
   <p id="info_upgrade">Web Speech API is not supported by this browser.
      Upgrade to <a href="//www.google.com/chrome">Chrome</a>
      version 25 or later.</p>
+   <p id = "too_fast">You're speaking pretty fast! Try slowing down some!</p>
+   <p id = "too_slow">You're speaking pretty slowly! Try speeding up some!</p>
 </div>
 <div class="right">
   <button id="start_button" onclick="startButton(event)">
@@ -222,6 +224,23 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+
+var transcript_length = '';
+var interfal = setInterval(logWords, 5000);
+function logWords() {
+  transcript_length.push(final_transcript.length);
+  if (transcript_length.length>2) {
+    if (Math.abs(transcript_length[transcript_length.length-1]-transcript_length[transcript_length.length-2])*12>188){
+        showInfo('too_fast');
+    } else if (Math.abs(transcript_length[transcript_length.length-1]-transcript_length[transcript_length.length-2])*12<133){
+        showInfo('too_slow');
+    } else {
+      showInfo('');
+    }
+  }
+}
+
+
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
 } else {
