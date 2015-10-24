@@ -84,7 +84,7 @@
   <a href="http://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html">
     Web Speech API</a> Speech Speed Feedback</h1>
 <div id="info">
-  <p id="info_start">Click on the microphone icon and begin speaking.  We will tell you if your spaking speed is too fast or too slow.</p>
+  <p id="info_start">Click on the microphone icon and begin speaking.  We will tell you if your speaking speed is too fast or too slow.</p>
   <p id="info_speak_now">Speak now.</p>
   <p id="info_no_speech">No speech was detected. You may need to adjust your
     <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
@@ -120,12 +120,13 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+var use_transcript = '';
 
 var transcript_length = new Array();
 var interfal = setInterval(logWords, 5000);
 function logWords() {
   if (recognizing) {
-    transcript_length.push(final_transcript.split(" ").length);
+    transcript_length.push(use_transcript.split(" ").length);
     if (transcript_length.length>2) {
       if (Math.abs(transcript_length[transcript_length.length-1]-transcript_length[transcript_length.length-2])*12>188){
           showInfo('too_fast');
@@ -200,6 +201,7 @@ if (!('webkitSpeechRecognition' in window)) {
         final_transcript += event.results[i][0].transcript;
       } else {
         interim_transcript += event.results[i][0].transcript;
+        use_transcript = interim_transcript;
       }
     }
     final_transcript = capitalize(final_transcript);
